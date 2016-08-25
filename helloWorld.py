@@ -26,17 +26,18 @@ with arcpy.da.UpdateCursor("c:/base/data.gdb/roads",
         cursor.updateRow(row)
         
 # Create update cursor for feature class
-rows = arcpy.UpdateCursor("c:/data/base.gdb/roads")
+lyrPolygons = arcpy.UpdateCursor("c:/data/base.gdb/polygon")
+lyrPoint = "c:/data/base.gdb/point"
+for rowPoly in rowsPolygons:    
+    xyCol=[]
+    sql="ORIG_FID='"+rowPoly.getValue("OBJECTID")+"'"
+    with arcpy.da.SearchCursor(lyrPoint, ['SHAPE@XY'],sql) as cursor:
+    for rowPoint in cursor:   
+        xy=rowPoint.getValue('SHAPE')
+        xyCol.append(xy);
+    rowPoly.setValue("xyField",xyCol)
+    rowsPolygons.updateRow(rowPoly)
 
-# Update the field used in buffer so the distance is based on the
-# road type. Road type is either 1, 2, 3 or 4. Distance is in meters.
-for row in rows:
-    # Fields from the table can be dynamically accessed from the
-    # row object. Here fields named BUFFER_DISTANCE and ROAD_TYPE
-    # are used
-    row.setValue("valueA", row.getValue("ROAD_TYPE") * 100)
-    rows.updateRow(row)
 
-# Delete cursor and row objects to remove locks on the data
-del row
-del rows
+del rowPoly
+del lyrPolygons

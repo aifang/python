@@ -5,7 +5,7 @@ from arcpy import env
 import random
 
 # important 用arcmap编辑必须注册版本，用代码编辑必须取消版本注册
-sdePath = r"C:\Users\Administrator\AppData\Roaming\ESRI\Desktop10.2\ArcCatalog\10.128.117.252.sde"
+sdePath = r"C:\Users\Administrator\AppData\Roaming\ESRI\Desktop10.2\ArcCatalog\192.168.12.25.sde"
 env.workspace = sdePath
 
 lyrEnterpriseInfos = 'EnterpriseInfos'
